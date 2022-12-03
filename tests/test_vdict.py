@@ -51,5 +51,5 @@ def test_dim_error():
 
 def test_growing_size_vdict():
     v = vdict(est_nelements=5)
-    for _ in range(100):
+    for _ in range(1000):
         v[np.random.rand(100)] = 1

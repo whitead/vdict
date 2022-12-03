@@ -5,7 +5,7 @@
 [![PyPI version](https://badge.fury.io/py/vdict.svg)](https://badge.fury.io/py/vdict)
 [![MIT license](https://img.shields.io/badge/License-MIT-blue.svg)](https://lbesson.mit-license.org/)
 
-This a very thin wrapper around [hnswlib](https://github.com/nmslib/hnswlib) to make it look like a python dictionary whose keys are numpy arrays.
+This a very thin wrapper around [hnswlib](https://github.com/nmslib/hnswlib) to make it look like a python dictionary whose keys are numpy arrays. Install with `pip install vdict`.
 
 ```python
 from vdict import vdict
@@ -19,13 +19,13 @@ data[v2] = 32
 assert data[v1] == 'hello'
 ```
 
-Note that the vectors all need to be the same length.
+## Details
 
-## Installation
-
-```bash
-pip install vdict
-```
+* All vectors must be the same length
+* Accessing with a vector gives the closest value keyed by the closest vector
+* The algorithm is *approximate* nearest neighbor search. You can tune the accuracy (see below)
+* You can have millions of vectors in the dictionary
+* If you know the approximate size, pass `est_nelements` to `vidct()` to reduce how often things are resized
 
 ## Usage
 
@@ -39,6 +39,10 @@ the most important ones are:
 ```python
 from vdict import vdict
 data = vdict(M=16, space='cosine', ef_construction=100)
+
+# add some vectors
+data[np.random.rand(32)] = 'hello'
+data[np.random.rand(32)] = 'world'
 ```
 
 ## License
