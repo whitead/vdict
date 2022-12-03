@@ -1,5 +1,10 @@
 # vdict
 
+[![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/ur-whitelab/vdict)
+[![tests](https://github.com/ur-whitelab/vdict/actions/workflows/tests.yml/badge.svg)](https://github.com/ur-whitelab/vdict)
+[![PyPI version](https://badge.fury.io/py/vdict.svg)](https://badge.fury.io/py/vdict)
+[![MIT license](https://img.shields.io/badge/License-MIT-blue.svg)](https://lbesson.mit-license.org/)
+
 This a very thin wrapper around [hnswlib](https://github.com/nmslib/hnswlib) to make it look like a python dictionary whose keys are numpy arrays.
 
 ```python

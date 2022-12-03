@@ -5,7 +5,7 @@ import numpy as np
 def test_construct_vdict():
     v = vdict()
     assert isinstance(v, vdict)
-    v = vdict(space='cosine', M=16)
+    v = vdict(space="cosine", M=16)
     assert isinstance(v, vdict)
 
 
@@ -18,7 +18,7 @@ def test_getitem_vdict():
     assert vd[vectors[2]] == 2
 
     # try with a new vector
-    new_vectors = {'a': np.random.rand(100), 'b': np.random.rand(100)}
+    new_vectors = {"a": np.random.rand(100), "b": np.random.rand(100)}
     for key, value in new_vectors.items():
         vd[value] = key
         assert vd[value] == key
@@ -46,7 +46,7 @@ def test_dim_error():
     except ValueError:
         pass
     else:
-        raise AssertionError('vdict should have raised an error')
+        raise AssertionError("vdict should have raised an error")
 
 
 def test_growing_size_vdict():
