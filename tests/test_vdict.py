@@ -29,9 +29,11 @@ def test_delete_vdict():
     vd = vdict()
     for k, v in vectors.items():
         vd[v] = k
+    assert len(vd) == 2
     del vd[vectors[1]]
     assert vd[vectors[1]] == 2
     assert vd[vectors[2]] == 2
+    assert len(vd) == 1
 
 
 def test_dim_error():
@@ -53,3 +55,13 @@ def test_growing_size_vdict():
     v = vdict(est_nelements=5)
     for _ in range(1000):
         v[np.random.rand(100)] = 1
+
+
+def test_iter_vdict():
+    vectors = {1: np.random.rand(100), 2: np.random.rand(100)}
+    vd = vdict()
+    for k, v in vectors.items():
+        vd[v] = k
+    for k, v in vd:
+        assert v in vectors.keys()
+        assert np.allclose(k, vectors[v])

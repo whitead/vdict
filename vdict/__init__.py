@@ -21,6 +21,7 @@ class vdict(list):
         self._M = M
         self._est_nelements = est_nelements
         self._ef_construction = ef_construction
+        self._deleted = 0
 
     def _setup(self, key: ndarray) -> None:
         self._dim = key.shape[-1]
@@ -56,3 +57,11 @@ class vdict(list):
     def __delitem__(self, key: ndarray) -> None:
         index = self.index.knn_query(key, k=1)[0][0]
         self.index.mark_deleted(index)
+        self._deleted += 1
+
+    def __iter__(self) -> Iterator[Tuple[ndarray, Any]]:
+        for i in range(len(self)):
+            yield self.index.get_items([i])[0], super().__getitem__(i)
+
+    def __len__(self) -> int:
+        return super().__len__() - self._deleted
