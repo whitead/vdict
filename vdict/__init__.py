@@ -1,6 +1,7 @@
 import hnswlib
 from numpy import ndarray
 from typing import *
+import numpy as np
 
 
 class vdict(list):
@@ -12,6 +13,7 @@ class vdict(list):
         M: int = 16,
         est_nelements: int = 200,
         ef_construction: int = 200,
+        tol: float = 1,
     ) -> None:
         super().__init__()
         # implementation is map from vector to index, index looks-up in list to value
@@ -22,6 +24,7 @@ class vdict(list):
         self._est_nelements = est_nelements
         self._ef_construction = ef_construction
         self._deleted = 0
+        self._tol = tol
 
     def _setup(self, key: ndarray) -> None:
         self._dim = key.shape[-1]
@@ -36,13 +39,19 @@ class vdict(list):
     def __getitem__(self, key: ndarray) -> Any:
         if not self._ready:
             raise IndexError("vdict is empty")
+        if type(key) is not ndarray and type(key) is list:
+            key = np.array(key)
         # check dimensionality
         if key.shape[-1] != self._dim:
             raise ValueError("vector has wrong dimensionality")
-        index = self.index.knn_query(key, k=1)[0][0][0]
-        return super().__getitem__(index)
+        index, distance = self.index.knn_query(key, k=1)
+        if distance[0][0] > self._tol:
+            raise IndexError("no match found")
+        return super().__getitem__(index[0][0])
 
     def __setitem__(self, key: ndarray, value: Any) -> None:
+        if type(key) is not ndarray and type(key) is list:
+            key = np.array(key)
         if not self._ready:
             self._setup(key)
         # check dimensionality
@@ -55,6 +64,8 @@ class vdict(list):
         self.index.add_items(key, len(self) - 1)
 
     def __delitem__(self, key: ndarray) -> None:
+        if type(key) is not ndarray and type(key) is list:
+            key = np.array(key)
         index = self.index.knn_query(key, k=1)[0][0]
         self.index.mark_deleted(index)
         self._deleted += 1

@@ -31,7 +31,6 @@ def test_delete_vdict():
         vd[v] = k
     assert len(vd) == 2
     del vd[vectors[1]]
-    assert vd[vectors[1]] == 2
     assert vd[vectors[2]] == 2
     assert len(vd) == 1
 
@@ -65,3 +64,16 @@ def test_iter_vdict():
     for k, v in vd:
         assert v in vectors.keys()
         assert np.allclose(k, vectors[v])
+
+
+def test_tol():
+    vd = vdict(tol=0.1)
+    vd[[0.2, 0.5]] = "a"
+    vd[[0.8, 0.3]] = "b"
+    # make sure it throws an error if the vector is too far away
+    try:
+        vd[[0.8, 0.8]]
+    except IndexError:
+        pass
+    else:
+        raise AssertionError("vdict should have raised an error")

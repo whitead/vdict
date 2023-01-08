@@ -19,6 +19,20 @@ data[v2] = 32
 assert data[v1] == 'hello'
 ```
 
+You can have it throw IndexErrors if you try to access a key that doesn't exist:
+
+```python
+data = vdict(tol=0.001)
+v1 = np.random.rand(32)
+v2 = np.random.rand(32)
+data[v1] = 'hello'
+# this will throw an IndexError because we didn't add yet!
+print(data[v2])
+```
+
+
+The default tolerance is `1` (generally do not throw errors), but you can set it to a smaller value to make it more strict.
+
 ## Details
 
 * All vectors must be the same length

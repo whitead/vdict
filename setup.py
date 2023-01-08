@@ -15,9 +15,7 @@ setup(
     url="https://github.com/ur-whitelab/vdict",
     license="MIT",
     packages=["vdict"],
-    install_requires=[
-        "hnswlib",
-    ],
+    install_requires=["hnswlib", "numpy"],
     test_suite="tests",
     long_description=long_description,
     long_description_content_type="text/markdown",
